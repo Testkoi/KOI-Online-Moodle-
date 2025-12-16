@@ -943,26 +943,12 @@
         }
 
         function selectCourse(courseId) {
-            try {
-                // Map course IDs to Moodle course URLs
-                const courseMap = {
-                    '1': '/course/view.php?id=2',   // Strategic Management - Update with actual Moodle course ID
-                    '2': '/course/view.php?id=3',   // Corporate Finance - Update with actual Moodle course ID
-                    '3': '/course/view.php?id=4',   // Digital Marketing - Update with actual Moodle course ID
-                    '4': '/course/view.php?id=5'    // Business Analytics - Update with actual Moodle course ID
-                };
-                
-                const courseUrl = courseMap[courseId];
-                
-                if (courseUrl) {
-                    // Navigate to Moodle course
-                    window.location.href = courseUrl;
-                } else if (typeof window.handleReactNavigation === 'function') {
-                    // Fallback for React navigation if needed
-                    window.handleReactNavigation(courseId);
-                } else {
-                    console.log('Navigate to course:', courseId);
-                }
+    try {
+        // Navigate to the course details page
+        window.location.href = 'CourseDetails.html';
+        
+        // Optional: If you want to pass course ID for customization later
+        // window.location.href = 'CourseDetails.html?course=' + courseId;
             } catch (e) {
                 console.error('Navigation error:', e);
             }
@@ -1044,3 +1030,4 @@
     window.selectCourse = (id) => KOI_MBA.selectCourse(id);
 
 </script>
+
