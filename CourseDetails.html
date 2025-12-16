@@ -1,0 +1,1181 @@
+
+<!-- MBA Connect Dashboard - HTML Fragment -->
+<!-- INSTRUCTIONS: Copy all code below and paste into Moodle HTML Editor (Source Mode) -->
+
+<!-- Dependencies -->
+<script src="https://cdn.tailwindcss.com/3.4.3"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+        },
+        colors: {
+          brand: {
+             sky: '#4ac4d0',
+             orange: '#f57238',
+             brown: '#c0a480',
+             dark: '#2d618e',
+             light: '#f8fafc',
+          }
+        },
+        boxShadow: {
+          'soft': '0 2px 15px -3px rgba(0,0,0,0.03)',
+          'active': '0 4px 20px -5px rgba(45, 97, 142, 0.08)',
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Base Styles */
+  .mba-wrapper { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  /* Smooth Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #c0a480; }
+
+  /* Tab Animation */
+  .tab-link { position: relative; color: #64748b; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.025em; text-transform: uppercase;}
+  .tab-link:hover { color: #2d618e; }
+  .tab-link::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px;
+    background-color: #f57238; transition: width 0.3s ease; border-radius: 3px 3px 0 0;
+  }
+  .tab-link.active::after { width: 100%; }
+  .tab-link.active { color: #2d618e; }
+
+  /* Accordion Styling - High Performance Grid Animation */
+  .accordion-container { 
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+    border: 1px solid #e2e8f0; 
+  }
+  
+  .accordion-container:hover { 
+    border-color: #cbd5e1; 
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+  }
+  
+  .accordion-container.active { 
+    border-color: #c0a480; 
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px -3px rgba(45, 97, 142, 0.05);
+    ring: 1px solid #c0a480; 
+  }
+
+  .accordion-icon-bg { transition: all 0.3s ease; }
+  .accordion-container.active .accordion-icon-bg { background-color: rgba(74, 196, 208, 0.1); color: #4ac4d0; }
+
+  /* New 60FPS Grid Animation Method */
+  .accordion-body { 
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    opacity: 0;
+  }
+  
+  .accordion-body.open { 
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  /* Inner wrapper is required for grid animation */
+  .accordion-inner {
+    overflow: hidden;
+  }
+
+  /* Timeline Step Animation - STRICT HIDING */
+  .step-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    /* Delay visibility hide to match opacity fade out */
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, visibility 0s 0.3s;
+  }
+  .step-body.open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    /* Immediate visibility show */
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, visibility 0s 0s;
+  }
+  .step-content {
+    overflow: hidden;
+  }
+  
+  .rotate-chevron { transition: transform 0.3s ease; }
+  .accordion-container.active .rotate-chevron { transform: rotate(180deg); color: #c0a480; }
+
+  .animate-enter { animation: enter 0.4s ease-out forwards; opacity: 0; transform: translateY(10px); }
+  @keyframes enter { to { opacity: 1; transform: translateY(0); } }
+  
+  .custom-table th { background-color: #f8fafc; color: #2d618e; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+  .custom-table tr:hover td { background-color: #fffcf8; }
+</style>
+
+<!-- Main Wrapper -->
+<div class="mba-wrapper bg-brand-light text-slate-600 font-sans min-h-screen pb-24">
+
+  <!-- Navigation Bar -->
+  <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm" id="navbar">
+    <div class="max-w-7xl mx-auto px-5">
+      
+      <!-- Top Row: Breadcrumb & Title -->
+      <div class="flex items-center justify-between py-4 border-b border-slate-100">
+        <div class="flex items-center gap-4">
+           <button onclick="window.history.back()" class="w-9 h-9 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-brand-dark hover:border-brand-dark transition-colors">
+              <i class="fas fa-arrow-left text-sm"></i>
+           </button>
+           <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-brand-brown">Course Dashboard</span>
+                <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Semester 1, 2024</span>
+              </div>
+              <h1 class="text-xl font-bold text-brand-dark leading-none">MBA-601: Strategic Management</h1>
+           </div>
+        </div>
+        
+        <!-- Live Progress Widget -->
+        <div class="hidden md:flex items-center gap-3">
+           <div class="text-right mr-2">
+             <p class="text-[10px] text-slate-400 font-medium">Semester Progress</p>
+             <p class="text-xs font-bold text-brand-dark" id="nav-progress-text">0%</p>
+           </div>
+           <div class="relative w-9 h-9 rounded-full border-2 border-slate-100 flex items-center justify-center">
+             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                <path class="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" />
+                <path id="nav-progress-circle" class="text-brand-brown transition-all duration-1000" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" />
+             </svg>
+           </div>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="flex overflow-x-auto gap-6 no-scrollbar pt-1" id="tabs-container">
+         <button onclick="window.switchTab('home')" class="tab-link active py-3.5 whitespace-nowrap" id="tab-home">
+           <i class="fas fa-home mr-1.5"></i> Home
+         </button>
+         <button onclick="window.switchTab('learning')" class="tab-link py-3.5 whitespace-nowrap" id="tab-learning">
+           <i class="fas fa-book mr-1.5"></i> Learning Materials
+         </button>
+         <button onclick="window.switchTab('assessments')" class="tab-link py-3.5 whitespace-nowrap" id="tab-assessments">
+           <i class="fas fa-graduation-cap mr-1.5"></i> Assessments
+         </button>
+         <button onclick="window.switchTab('announcements')" class="tab-link py-3.5 whitespace-nowrap" id="tab-announcements">
+           <i class="fas fa-bullhorn mr-1.5"></i> Announcements
+         </button>
+         <button onclick="window.switchTab('discussions')" class="tab-link py-3.5 whitespace-nowrap" id="tab-discussions">
+           <i class="fas fa-users mr-1.5"></i> Discussions
+         </button>
+         <button onclick="window.switchTab('library')" class="tab-link py-3.5 whitespace-nowrap" id="tab-library">
+           <i class="fas fa-landmark mr-1.5"></i> Library
+         </button>
+         <button onclick="window.switchTab('support')" class="tab-link py-3.5 whitespace-nowrap" id="tab-support">
+           <i class="fas fa-life-ring mr-1.5"></i> Support
+         </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-5 py-8 space-y-4">
+  
+    <!-- HOME TAB CONTENT -->
+    <div id="content-home" class="tab-content block space-y-4 animate-enter">
+      
+      <!-- 1. Subject Overview / Welcome Section -->
+      <div class="bg-white rounded-lg shadow-soft hover:shadow-active accordion-container active group">
+        <div class="py-1.5 px-4 sm:px-5 flex justify-between items-center cursor-pointer" onclick="window.toggleAccordion(this)">
+           <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-sky/10 group-hover:text-brand-sky transition-colors accordion-icon-bg">
+                 <i class="fas fa-layer-group text-lg"></i>
+              </div>
+              <h2 class="text-lg font-bold text-brand-dark">Subject Dashboard</h2>
+           </div>
+           <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 text-slate-300 rotate-chevron">
+             <i class="fas fa-chevron-down text-xs"></i>
+           </div>
+        </div>
+        <div class="accordion-body open">
+           <div class="accordion-inner px-5 pb-5 pt-0">
+             <div class="flex gap-4 border-t border-slate-50 pt-5">
+               <div class="hidden sm:block w-0.5 self-stretch bg-gradient-to-b from-brand-brown/40 to-transparent rounded-full"></div>
+               <div class="flex-1">
+                  <!-- Dynamic Date Headline -->
+                  <h3 class="text-base font-bold text-brand-dark mb-2 flex items-center gap-2">
+                    Current Module: Strategic Management <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-sky/10 text-brand-sky" id="current-week-label">WEEK 1</span>
+                  </h3>
+                  <p class="text-sm text-slate-600 mb-5 leading-relaxed">
+                    Welcome to the central hub for <strong>MBA-601</strong>. Use the navigation above to access specific materials. 
+                    Below is the featured lecture for this week.
+                  </p>
+                  
+                   <!-- Premium Video Player with Cover -->
+                   <div class="w-full mb-4 mt-2">
+                      <div 
+                         class="relative w-full aspect-video rounded-xl overflow-hidden shadow-xl ring-1 ring-black/10 group cursor-pointer video-container bg-slate-900" 
+                         onclick="window.playVideo(this, 'j0ejk_kF1YA')"
+                      >
+                         <!-- Thumbnail Image (Using a Business/Lecture thematic image) -->
+                         <img src="https://img.youtube.com/vi/j0ejk_kF1YA/maxresdefault.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90" alt="Video Thumbnail">
+                         
+                         <!-- Overlay Gradient -->
+                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent pointer-events-none"></div>
+                         
+                         <!-- Play Button -->
+                         <div class="absolute inset-0 flex items-center justify-center z-10">
+                             <div class="w-16 h-16 bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center pl-1 shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-brand-sky group-hover:border-transparent group-hover:text-white">
+                                 <i class="fas fa-play text-xl text-white drop-shadow-md"></i>
+                             </div>
+                         </div>
+                         
+                         <!-- Video Info -->
+                         <div class="absolute bottom-5 left-5 right-5 z-10 pointer-events-none">
+                              <span class="inline-block px-2.5 py-0.5 bg-brand-orange text-white text-[10px] font-bold uppercase tracking-widest mb-1.5 rounded shadow-lg">Lecture 4.1</span>
+                              <div class="flex justify-between items-end">
+                                 <h3 class="text-white font-bold text-lg drop-shadow-lg leading-tight">Strategic Implementation Frameworks</h3>
+                                 <div class="text-white/90 text-[10px] font-bold bg-black/50 px-2 py-1 rounded-md backdrop-blur-md border border-white/10 flex items-center gap-1.5">
+                                    <i class="far fa-clock"></i> 45:12
+                                 </div>
+                              </div>
+                         </div>
+                      </div>
+                   </div>
+                   <!-- End Video Player -->
+
+               </div>
+             </div>
+           </div>
+        </div>
+      </div>
+
+      <!-- 2. Learning Guide -->
+      <div class="bg-white rounded-lg shadow-soft hover:shadow-active accordion-container group">
+        <div class="py-1.5 px-4 sm:px-5 flex justify-between items-center cursor-pointer" onclick="window.toggleAccordion(this)">
+           <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-sky/10 group-hover:text-brand-sky transition-colors accordion-icon-bg">
+                 <i class="fas fa-book-open text-lg"></i>
+              </div>
+              <h2 class="text-lg font-bold text-brand-dark">Learning Guide</h2>
+           </div>
+           <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 text-slate-300 rotate-chevron">
+             <i class="fas fa-chevron-down text-xs"></i>
+           </div>
+        </div>
+        <div class="accordion-body">
+           <div class="accordion-inner px-5 pb-5 pt-0">
+              <div class="bg-brand-light rounded-lg border border-slate-200 p-5">
+                 <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-bold text-brand-dark flex items-center gap-2 text-sm">
+                      <i class="fas fa-list-check text-brand-brown"></i> Weekly Checklist
+                    </h4>
+                    <span class="text-[10px] font-bold text-brand-brown bg-brand-brown/10 px-2.5 py-0.5 rounded-full">0/3 Completed</span>
+                 </div>
+                 
+                 <ul class="space-y-3">
+                   <li class="flex items-start gap-3 p-3 bg-white border border-slate-100 rounded-lg hover:border-brand-sky/30 hover:shadow-sm cursor-pointer transition-all group/item" onclick="window.toggleCheck(this)">
+                      <i class="far fa-circle text-slate-300 text-lg mt-0.5 check-icon transition-colors"></i>
+                      <div>
+                        <span class="text-sm font-bold text-slate-700 block mb-0.5 group-hover/item:text-brand-dark transition-colors">Read Chapter 4: Organizational Design</span>
+                        <span class="text-xs text-slate-400 font-medium">Textbook • Pages 120-145</span>
+                      </div>
+                   </li>
+                   <li class="flex items-start gap-3 p-3 bg-white border border-slate-100 rounded-lg hover:border-brand-sky/30 hover:shadow-sm cursor-pointer transition-all group/item" onclick="window.toggleCheck(this)">
+                      <i class="far fa-circle text-slate-300 text-lg mt-0.5 check-icon transition-colors"></i>
+                      <div>
+                        <span class="text-sm font-bold text-slate-700 block mb-0.5 group-hover/item:text-brand-dark transition-colors">Watch Lecture Video</span>
+                        <span class="text-xs text-slate-400 font-medium">Video • 45 mins</span>
+                      </div>
+                   </li>
+                   <li class="flex items-start gap-3 p-3 bg-white border border-slate-100 rounded-lg hover:border-brand-sky/30 hover:shadow-sm cursor-pointer transition-all group/item" onclick="window.toggleCheck(this)">
+                      <i class="far fa-circle text-slate-300 text-lg mt-0.5 check-icon transition-colors"></i>
+                       <div>
+                        <span class="text-sm font-bold text-slate-700 block mb-0.5 group-hover/item:text-brand-dark transition-colors">Complete Quiz 3</span>
+                        <span class="text-xs text-brand-orange font-bold">Due Friday, 11:59 PM</span>
+                      </div>
+                   </li>
+                 </ul>
+              </div>
+           </div>
+        </div>
+      </div>
+
+      <!-- 3. Essential Resources -->
+      <div class="bg-white rounded-lg shadow-soft hover:shadow-active accordion-container group">
+        <div class="py-1.5 px-4 sm:px-5 flex justify-between items-center cursor-pointer" onclick="window.toggleAccordion(this)">
+           <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-sky/10 group-hover:text-brand-sky transition-colors accordion-icon-bg">
+                 <i class="fas fa-folder-open text-lg"></i>
+              </div>
+              <h2 class="text-lg font-bold text-brand-dark">Essential Resources</h2>
+           </div>
+           <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 text-slate-300 rotate-chevron">
+             <i class="fas fa-chevron-down text-xs"></i>
+           </div>
+        </div>
+        <div class="accordion-body">
+           <div class="accordion-inner px-5 pb-5 pt-0 grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- Resource 1 -->
+              <a href="#" class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-brand-brown hover:shadow-md transition-all group/res">
+                 <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0 group-hover/res:scale-110 transition-transform">
+                    <i class="fas fa-file-pdf text-base"></i>
+                 </div>
+                 <div>
+                    <h4 class="font-bold text-brand-dark text-sm group-hover/res:text-brand-brown transition-colors">Subject Outline</h4>
+                    <p class="text-[10px] text-slate-400 font-medium">PDF • 2.4 MB</p>
+                 </div>
+              </a>
+
+              <!-- Resource 2 -->
+              <a href="#" class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-brand-brown hover:shadow-md transition-all group/res">
+                 <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center flex-shrink-0 group-hover/res:scale-110 transition-transform">
+                    <i class="fas fa-link text-base"></i>
+                 </div>
+                 <div>
+                    <h4 class="font-bold text-brand-dark text-sm group-hover/res:text-brand-brown transition-colors">Reading List (Library)</h4>
+                    <p class="text-[10px] text-slate-400 font-medium">External Link</p>
+                 </div>
+              </a>
+
+              <!-- Resource 3 -->
+              <a href="#" class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-brand-brown hover:shadow-md transition-all group/res">
+                 <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center flex-shrink-0 group-hover/res:scale-110 transition-transform">
+                    <i class="fas fa-table text-base"></i>
+                 </div>
+                 <div>
+                    <h4 class="font-bold text-brand-dark text-sm group-hover/res:text-brand-brown transition-colors">Case Study Datasets</h4>
+                    <p class="text-[10px] text-slate-400 font-medium">XLSX • 4.2 MB</p>
+                 </div>
+              </a>
+           </div>
+        </div>
+      </div>
+
+      <!-- 4. Assessments Summary -->
+      <div class="bg-white rounded-lg shadow-soft hover:shadow-active accordion-container group">
+        <div class="py-1.5 px-4 sm:px-5 flex justify-between items-center cursor-pointer" onclick="window.toggleAccordion(this)">
+           <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-sky/10 group-hover:text-brand-sky transition-colors accordion-icon-bg">
+                 <i class="fas fa-clipboard-list text-lg"></i>
+              </div>
+              <h2 class="text-lg font-bold text-brand-dark">Assessments Summary</h2>
+           </div>
+           <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 text-slate-300 rotate-chevron">
+             <i class="fas fa-chevron-down text-xs"></i>
+           </div>
+        </div>
+        <div class="accordion-body">
+           <div class="accordion-inner px-5 pb-5 pt-0 overflow-x-auto">
+              <table class="w-full text-left custom-table border-separate border-spacing-0 rounded-lg overflow-hidden border border-slate-100">
+                 <thead>
+                    <tr>
+                       <th class="p-3 bg-slate-50 border-b border-slate-100">Task Name</th>
+                       <th class="p-3 bg-slate-50 border-b border-slate-100">Weight</th>
+                       <th class="p-3 bg-slate-50 border-b border-slate-100">Due Date</th>
+                       <th class="p-3 bg-slate-50 border-b border-slate-100">Status</th>
+                    </tr>
+                 </thead>
+                 <tbody class="text-sm">
+                    <tr>
+                       <td class="p-3 border-b border-slate-50 font-bold text-brand-dark">Quiz 1: Fundamentals</td>
+                       <td class="p-3 border-b border-slate-50 text-slate-500">10%</td>
+                       <td class="p-3 border-b border-slate-50 text-slate-500">Aug 25</td>
+                       <td class="p-3 border-b border-slate-50"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-green-50 text-green-700 rounded text-[11px] font-bold border border-green-100"><i class="fas fa-check text-[9px]"></i> Graded</span></td>
+                    </tr>
+                    <tr>
+                       <td class="p-3 border-b border-slate-50 font-bold text-brand-dark">Mid-Term Case Analysis</td>
+                       <td class="p-3 border-b border-slate-50 text-slate-500">30%</td>
+                       <td class="p-3 border-b border-slate-50 text-slate-500">Oct 10</td>
+                       <td class="p-3 border-b border-slate-50"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-brand-orange/10 text-brand-orange rounded text-[11px] font-bold border border-brand-orange/20"><i class="far fa-clock text-[9px]"></i> Pending</span></td>
+                    </tr>
+                    <tr>
+                       <td class="p-3 font-bold text-brand-dark">Final Project</td>
+                       <td class="p-3 text-slate-500">60%</td>
+                       <td class="p-3 text-slate-500">Nov 15</td>
+                       <td class="p-3"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-slate-100 text-slate-400 rounded text-[11px] font-bold border border-slate-200">Not Started</span></td>
+                    </tr>
+                 </tbody>
+              </table>
+           </div>
+        </div>
+      </div>
+
+      <!-- 5. Teaching Staff -->
+      <div class="bg-white rounded-lg shadow-soft hover:shadow-active accordion-container group">
+        <div class="py-1.5 px-4 sm:px-5 flex justify-between items-center cursor-pointer" onclick="window.toggleAccordion(this)">
+           <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-sky/10 group-hover:text-brand-sky transition-colors accordion-icon-bg">
+                 <i class="fas fa-chalkboard-teacher text-lg"></i>
+              </div>
+              <h2 class="text-lg font-bold text-brand-dark">Teaching Staff</h2>
+           </div>
+           <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 text-slate-300 rotate-chevron">
+             <i class="fas fa-chevron-down text-xs"></i>
+           </div>
+        </div>
+        <div class="accordion-body">
+           <div class="accordion-inner px-5 pb-5 pt-0 flex flex-col md:flex-row gap-4">
+              <!-- Staff Card 1 -->
+              <div class="flex-1 flex items-center gap-4 p-4 rounded-lg border border-slate-200 bg-white hover:shadow-md transition-all group/staff">
+                 <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
+                 </div>
+                 <div>
+                    <h4 class="font-bold text-brand-dark text-sm group-hover/staff:text-brand-dark">Dr. Sarah Jenkins</h4>
+                    <p class="text-[10px] text-brand-brown font-bold uppercase tracking-wider mb-2">Lecturer</p>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<!-- [ACTION: INSERT EMAIL HERE] -->" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-[11px] px-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-slate-600 hover:bg-brand-dark hover:text-white hover:border-brand-dark transition-all font-semibold">
+                       <i class="far fa-envelope mr-1.5"></i> Contact (Gmail)
+                    </a>
+                 </div>
+              </div>
+              <!-- Staff Card 2 -->
+              <div class="flex-1 flex items-center gap-4 p-4 rounded-lg border border-slate-200 bg-white hover:shadow-md transition-all group/staff">
+                 <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm">
+                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-gray-300 border-2 border-white rounded-full"></div>
+                 </div>
+                 <div>
+                    <h4 class="font-bold text-brand-dark text-sm group-hover/staff:text-brand-dark">Dr. James Wilson</h4>
+                    <p class="text-[10px] text-brand-brown font-bold uppercase tracking-wider mb-2">Head Tutor</p>
+                     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=<!-- [ACTION: INSERT EMAIL HERE] -->" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-[11px] px-3 py-1.5 bg-slate-50 border border-slate-200 rounded text-slate-600 hover:bg-brand-dark hover:text-white hover:border-brand-dark transition-all font-semibold">
+                       <i class="far fa-envelope mr-1.5"></i> Contact (Gmail)
+                    </a>
+                 </div>
+              </div>
+           </div>
+        </div>
+      </div>
+
+       <!-- 6. Technical Skills -->
+      <div class="bg-white rounded-lg shadow-soft hover:shadow-active accordion-container group">
+        <div class="py-1.5 px-4 sm:px-5 flex justify-between items-center cursor-pointer" onclick="window.toggleAccordion(this)">
+           <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-sky/10 group-hover:text-brand-sky transition-colors accordion-icon-bg">
+                 <i class="fas fa-laptop-code text-lg"></i>
+              </div>
+              <h2 class="text-lg font-bold text-brand-dark">Technical Skills & Software</h2>
+           </div>
+           <div class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 text-slate-300 rotate-chevron">
+             <i class="fas fa-chevron-down text-xs"></i>
+           </div>
+        </div>
+        <div class="accordion-body">
+           <div class="accordion-inner px-5 pb-5 pt-0">
+              <p class="text-sm text-slate-500 mb-4 max-w-xl">Proficiency in the following tools is recommended. Resources and installation guides can be found in the Library tab.</p>
+              
+              <div class="space-y-4 max-w-2xl">
+                 <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-100">
+                    <div class="flex justify-between mb-1.5 items-center">
+                       <span class="text-sm font-bold text-brand-dark flex items-center gap-1.5"><i class="fas fa-table text-green-600 text-base"></i> Microsoft Excel (Advanced)</span>
+                       <span class="text-[10px] font-bold uppercase bg-brand-dark text-white px-1.5 py-0.5 rounded">Required</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                       <div class="bg-brand-dark h-full rounded-full w-3/4"></div>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1.5">Pivot Tables, VLOOKUP, Macros</p>
+                 </div>
+                 
+                 <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-100">
+                    <div class="flex justify-between mb-1.5 items-center">
+                       <span class="text-sm font-bold text-brand-dark flex items-center gap-1.5"><i class="fas fa-chart-pie text-brand-orange text-base"></i> Tableau / PowerBI</span>
+                       <span class="text-[10px] font-bold uppercase bg-slate-200 text-slate-500 px-1.5 py-0.5 rounded">Recommended</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                       <div class="bg-brand-brown h-full rounded-full w-1/2"></div>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1.5">Data Visualization, Dashboarding</p>
+                 </div>
+              </div>
+           </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LEARNING MATERIALS TAB CONTENT -->
+    <div id="content-learning" class="tab-content hidden animate-enter">
+        <!-- Week Navigation -->
+        <div class="flex items-center gap-2 mb-8 overflow-x-auto pb-2 no-scrollbar">
+            <button onclick="window.switchWeek('overview')" id="week-btn-overview" class="week-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Overview
+            </button>
+            <button onclick="window.switchWeek('week1')" id="week-btn-week1" class="week-btn px-6 py-3 rounded-lg text-sm font-bold bg-brand-dark text-white shadow-md transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-calendar-week mr-2"></i> Week 1
+            </button>
+            <button onclick="window.switchWeek('week2')" id="week-btn-week2" class="week-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-calendar-week mr-2"></i> Week 2
+            </button>
+            <button onclick="window.switchWeek('week3')" id="week-btn-week3" class="week-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-calendar-week mr-2"></i> Week 3
+            </button>
+            <button onclick="window.switchWeek('week4')" id="week-btn-week4" class="week-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-calendar-week mr-2"></i> Week 4
+            </button>
+        </div>
+
+        <!-- Overview Content Placeholder -->
+        <div id="week-content-overview" class="week-content hidden">
+            <div class="bg-white rounded-xl p-16 text-center border border-slate-200 shadow-soft">
+              <div class="w-16 h-16 bg-brand-light rounded-full flex items-center justify-center mx-auto mb-4">
+                 <i class="fas fa-info-circle text-2xl text-brand-brown/50"></i>
+              </div>
+              <h3 class="text-lg font-bold text-brand-dark">Course Overview</h3>
+              <p class="text-slate-400 text-xs mt-1">Select a week to view specific learning steps.</p>
+           </div>
+        </div>
+
+        <!-- Week 1 Content -->
+        <div id="week-content-week1" class="week-content block">
+            <!-- Banner (Dark Blue) - Updated size -->
+            <div class="rounded-2xl p-6 mb-8 text-white relative overflow-hidden shadow-lg flex flex-col justify-center min-h-[160px]" style="background-color: #2d618e;">
+                 <!-- Decor -->
+                 <div class="absolute right-0 top-0 h-full w-1/3 bg-white/5 skew-x-12 transform origin-bottom"></div>
+                 <i class="fas fa-university absolute -right-6 -bottom-6 text-8xl text-white/10"></i>
+                 
+                 <div class="relative z-10">
+                    <span class="inline-block px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest mb-3 border border-white/10">Module 1</span>
+                    <h2 class="text-2xl font-bold mb-2 tracking-tight">Historical Cost & Conceptual Framework</h2>
+                    <p class="text-blue-100 text-sm max-w-2xl leading-relaxed opacity-90">In this week we explore the fundamental concepts of historical cost accounting and the regulations that govern financial reporting.</p>
+                 </div>
+            </div>
+
+            <!-- Vertical Timeline Steps (Refactored to Accordions) -->
+            <div class="space-y-8 relative pl-12">
+                <!-- Connected Line Gradient -->
+                <div class="absolute left-8 top-2 bottom-6 w-0.5 bg-gradient-to-b from-brand-dark via-brand-sky to-slate-200"></div>
+
+                <!-- Step 1: Overview -->
+                <div class="relative group">
+                    <div class="absolute -left-8 top-0 bg-brand-dark text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-white shadow-sm z-20">1</div>
+                    
+                    <div class="bg-white rounded-r-xl rounded-bl-xl border border-slate-100 shadow-sm relative transition-all hover:shadow-md">
+                        <!-- Triangle Connector -->
+                        <div class="absolute top-3 -left-2 w-4 h-4 bg-white border-l border-b border-slate-100 transform rotate-45"></div>
+                        
+                        <!-- Header -->
+                        <div class="p-6 cursor-pointer flex justify-between items-center" onclick="window.toggleStep(this)">
+                           <h3 class="text-lg font-bold text-brand-dark">Module Overview</h3>
+                           <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"></i>
+                        </div>
+
+                        <!-- Expandable Body (Default Closed) -->
+                        <div class="step-body">
+                            <div class="step-content px-6 pb-6 pt-0">
+                                <p class="text-slate-600 text-sm mb-4 leading-relaxed">In this week we are going to explore the concept of HISTORICAL COST. This week's lecture will be delivered online and tutorial will be delivered face-to-face.</p>
+                                
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg border border-slate-100 text-xs font-bold text-slate-600">
+                                        <i class="fas fa-check-circle text-green-500"></i> Readings
+                                    </div>
+                                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg border border-slate-100 text-xs font-bold text-slate-600">
+                                        <i class="fas fa-check-circle text-green-500"></i> Lecture
+                                    </div>
+                                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-lg border border-slate-100 text-xs font-bold text-slate-600">
+                                        <i class="far fa-circle text-slate-400"></i> Quiz
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Readings -->
+                <div class="relative group">
+                    <div class="absolute -left-8 top-0 bg-brand-sky text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-white shadow-sm z-20">2</div>
+                    
+                    <div class="bg-white rounded-r-xl rounded-bl-xl border border-slate-100 shadow-sm relative transition-all hover:shadow-md hover:border-brand-sky/30">
+                         <div class="absolute top-3 -left-2 w-4 h-4 bg-white border-l border-b border-slate-100 transform rotate-45"></div>
+                         
+                         <!-- Header -->
+                         <div class="p-5 cursor-pointer flex justify-between items-center" onclick="window.toggleStep(this)">
+                             <div class="flex items-center gap-4">
+                                <div class="w-12 h-14 bg-blue-50 border border-blue-100 rounded flex flex-col items-center justify-center shadow-sm">
+                                    <div class="w-8 h-1 bg-blue-200 mb-1 rounded-full"></div>
+                                    <div class="w-8 h-1 bg-blue-200 mb-1 rounded-full"></div>
+                                    <div class="w-6 h-1 bg-blue-200 rounded-full"></div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-brand-dark text-sm mb-1">Chapter 1: Accounting Regulations</h4>
+                                    <p class="text-xs text-slate-500">Textbook • Pages 120-145</p>
+                                </div>
+                             </div>
+                             <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"></i>
+                         </div>
+                         
+                         <!-- Expandable Body -->
+                         <div class="step-body">
+                             <div class="step-content px-5 pb-5 pt-0">
+                                 <p class="text-xs text-slate-500 mb-3 bg-slate-50 p-3 rounded border border-slate-100 leading-relaxed">Key topics covered: Conceptual Framework, Qualitative Characteristics, and Financial Reporting Standards.</p>
+                                 <button class="text-xs bg-brand-sky/10 text-brand-sky px-3 py-1.5 rounded font-bold hover:bg-brand-sky/20 transition-colors">Access Reading Material</button>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Video -->
+                 <div class="relative group">
+                    <div class="absolute -left-8 top-0 bg-brand-orange text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-white shadow-sm z-20">3</div>
+                    
+                    <div class="bg-white rounded-r-xl rounded-bl-xl border border-slate-100 shadow-sm relative transition-all hover:shadow-md">
+                         <div class="absolute top-3 -left-2 w-4 h-4 bg-white border-l border-b border-slate-100 transform rotate-45"></div>
+                         
+                         <!-- Header -->
+                         <div class="p-5 cursor-pointer flex justify-between items-center" onclick="window.toggleStep(this)">
+                             <div class="flex items-center gap-4">
+                                 <div class="w-12 h-12 bg-brand-orange/10 text-brand-orange rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-video text-xl"></i>
+                                 </div>
+                                 <div>
+                                     <h4 class="font-bold text-brand-dark text-sm mb-1">Lecture Material</h4>
+                                     <p class="text-xs text-slate-500">Video • 15:45</p>
+                                 </div>
+                             </div>
+                             <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"></i>
+                         </div>
+                         
+                         <!-- Expandable Body -->
+                         <div class="step-body">
+                             <div class="step-content px-5 pb-5 pt-0">
+                                 <div class="relative w-full aspect-video bg-slate-900 rounded-lg overflow-hidden vid-container cursor-pointer group/video" onclick="window.playVideo(this, 'j0ejk_kF1YA')">
+                                    <img src="https://img.youtube.com/vi/j0ejk_kF1YA/maxresdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover/video:opacity-100 transition-opacity">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center pl-1 shadow-lg border border-white/30 group-hover/video:scale-110 transition-transform">
+                                            <i class="fas fa-play text-white text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div class="absolute bottom-3 left-3 bg-black/50 text-white text-[10px] px-2 py-1 rounded font-bold backdrop-blur-md">
+                                        Tap to play
+                                    </div>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Tutorial -->
+                <div class="relative group">
+                    <div class="absolute -left-8 top-0 bg-brand-brown text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-white shadow-sm z-20">4</div>
+                    
+                    <div class="bg-white rounded-r-xl rounded-bl-xl border border-slate-100 shadow-sm relative transition-all hover:shadow-md">
+                            <div class="absolute top-3 -left-2 w-4 h-4 bg-white border-l border-b border-slate-100 transform rotate-45"></div>
+                            
+                            <!-- Header -->
+                            <div class="p-5 cursor-pointer flex justify-between items-center" onclick="window.toggleStep(this)">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-brand-brown/10 text-brand-brown rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-users text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-brand-dark text-sm mb-1">Tutorial Preparation</h4>
+                                        <p class="text-xs text-slate-500">Activity Sheet • PDF</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"></i>
+                            </div>
+                            
+                            <!-- Expandable Body -->
+                            <div class="step-body">
+                                <div class="step-content px-5 pb-5 pt-0">
+                                    <p class="text-xs text-slate-500 mb-3 bg-slate-50 p-3 rounded border border-slate-100 leading-relaxed">Download the activity sheet for this week's face-to-face tutorial session. Please bring a printed copy.</p>
+                                    <button class="text-xs bg-brand-brown/10 text-brand-brown px-3 py-1.5 rounded font-bold hover:bg-brand-brown/20 transition-colors">Download PDF</button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Quiz -->
+                <div class="relative group">
+                    <div class="absolute -left-8 top-0 bg-brand-dark text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ring-4 ring-white shadow-sm z-20">5</div>
+                    
+                    <div class="bg-white rounded-r-xl rounded-bl-xl border border-slate-100 shadow-sm relative transition-all hover:shadow-md">
+                            <div class="absolute top-3 -left-2 w-4 h-4 bg-white border-l border-b border-slate-100 transform rotate-45"></div>
+                            
+                            <!-- Header -->
+                            <div class="p-5 cursor-pointer flex justify-between items-center" onclick="window.toggleStep(this)">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-brand-dark/10 text-brand-dark rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-tasks text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-brand-dark text-sm mb-1">Weekly Quiz</h4>
+                                        <p class="text-xs text-slate-500">Assessment • 10%</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"></i>
+                            </div>
+                            
+                            <!-- Expandable Body -->
+                            <div class="step-body">
+                                <div class="step-content px-5 pb-5 pt-0">
+                                    <p class="text-xs text-slate-500 mb-3 bg-slate-50 p-3 rounded border border-slate-100 leading-relaxed">Complete the weekly quiz to test your understanding of Historical Cost. 10 Questions, multiple choice.</p>
+                                    <button class="text-xs bg-brand-dark text-white px-3 py-1.5 rounded font-bold hover:bg-opacity-90 transition-colors">Start Quiz</button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Week 2 Content -->
+        <div id="week-content-week2" class="week-content hidden">
+            <!-- Banner (Orange) - Updated size -->
+            <div class="rounded-2xl p-6 mb-8 text-white relative overflow-hidden shadow-lg flex flex-col justify-center min-h-[160px]" style="background-color: #f57238;">
+                 <!-- Decor -->
+                 <div class="absolute right-0 top-0 h-full w-1/3 bg-white/5 skew-x-12 transform origin-bottom"></div>
+                 <i class="fas fa-chart-line absolute -right-6 -bottom-6 text-8xl text-white/10"></i>
+                 
+                 <div class="relative z-10">
+                    <span class="inline-block px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest mb-3 border border-white/10">Module 2</span>
+                    <h2 class="text-2xl font-bold mb-2 tracking-tight">Fair Value Measurement</h2>
+                    <p class="text-orange-100 text-sm max-w-2xl leading-relaxed opacity-90">Week 2 focuses on modern accounting practices and fair value estimation techniques.</p>
+                 </div>
+            </div>
+
+            <!-- Locked Content Placeholder -->
+            <div class="border-2 border-dashed border-slate-200 rounded-xl p-16 text-center bg-slate-50/50">
+                 <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-slate-300">
+                     <i class="fas fa-lock text-2xl"></i>
+                 </div>
+                 <h3 class="text-lg font-bold text-slate-700">Content Locked</h3>
+                 <p class="text-slate-400 text-xs mt-1">Please complete Week 1 to unlock this content.</p>
+            </div>
+        </div>
+
+        <!-- Other weeks placeholders -->
+        <div id="week-content-week3" class="week-content hidden">
+            <div class="p-10 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">Week 3 Content...</div>
+        </div>
+        <div id="week-content-week4" class="week-content hidden">
+            <div class="p-10 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">Week 4 Content...</div>
+        </div>
+    </div>
+
+    <!-- ASSESSMENTS TAB CONTENT -->
+    <div id="content-assessments" class="tab-content hidden animate-enter">
+        <!-- Assessment Navigation -->
+        <div class="flex items-center gap-2 mb-8 overflow-x-auto pb-2 no-scrollbar">
+            <button onclick="window.switchAssessment('overview')" id="assess-btn-overview" class="assess-btn px-6 py-3 rounded-lg text-sm font-bold bg-brand-dark text-white shadow-md transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Overview
+            </button>
+            <button onclick="window.switchAssessment('a1')" id="assess-btn-a1" class="assess-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-clipboard-check mr-2"></i> Assessment 1
+            </button>
+            <button onclick="window.switchAssessment('a2')" id="assess-btn-a2" class="assess-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-clipboard-check mr-2"></i> Assessment 2
+            </button>
+            <button onclick="window.switchAssessment('a3')" id="assess-btn-a3" class="assess-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-clipboard-check mr-2"></i> Assessment 3
+            </button>
+            <button onclick="window.switchAssessment('grades')" id="assess-btn-grades" class="assess-btn px-6 py-3 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 border border-transparent transition-all whitespace-nowrap flex items-center">
+                <i class="fas fa-chart-bar mr-2"></i> Grades
+            </button>
+        </div>
+
+        <!-- Overview Content -->
+        <div id="assess-content-overview" class="assess-content block">
+           <div class="bg-white rounded-xl border border-slate-200 shadow-soft overflow-hidden">
+               <div class="p-6 border-b border-slate-100 bg-slate-50">
+                  <h3 class="text-lg font-bold text-brand-dark">Assessment Schedule</h3>
+                  <p class="text-xs text-slate-500 mt-1">Key dates and weightings for this semester.</p>
+               </div>
+               <div class="overflow-x-auto">
+                  <table class="w-full text-left custom-table">
+                     <thead>
+                        <tr>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Assessment Item</th>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Type</th>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Weight</th>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Due Date</th>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody class="text-sm">
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="window.switchAssessment('a1')">
+                           <td class="p-4 border-b border-slate-50 font-bold text-brand-dark">Assessment 1: Quiz</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">Online Quiz</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">10%</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">Aug 25</td>
+                           <td class="p-4 border-b border-slate-50"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-50 text-green-700 rounded text-[11px] font-bold border border-green-100">Graded</span></td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="window.switchAssessment('a2')">
+                           <td class="p-4 border-b border-slate-50 font-bold text-brand-dark">Assessment 2: Case Analysis</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">Written Report</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">30%</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">Oct 10</td>
+                           <td class="p-4 border-b border-slate-50"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-brand-orange/10 text-brand-orange rounded text-[11px] font-bold border border-brand-orange/20">Upcoming</span></td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="window.switchAssessment('a3')">
+                           <td class="p-4 font-bold text-brand-dark">Assessment 3: Final Project</td>
+                           <td class="p-4 text-slate-500">Group Project</td>
+                           <td class="p-4 text-slate-500">60%</td>
+                           <td class="p-4 text-slate-500">Nov 15</td>
+                           <td class="p-4"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 text-slate-400 rounded text-[11px] font-bold border border-slate-200">Not Started</span></td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+           </div>
+        </div>
+
+        <!-- Assessment 1 Content -->
+        <div id="assess-content-a1" class="assess-content hidden">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-soft p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-green-50 text-green-700 rounded-full text-[10px] font-bold uppercase tracking-widest border border-green-100 mb-2">Completed</span>
+                        <h2 class="text-2xl font-bold text-brand-dark">Assessment 1: Fundamentals Quiz</h2>
+                        <p class="text-sm text-slate-500 mt-1">Covers Modules 1-3 • 30 Minutes Time Limit</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Your Grade</p>
+                        <p class="text-3xl font-bold text-brand-dark">85<span class="text-lg text-slate-400">/100</span></p>
+                    </div>
+                </div>
+                <div class="border-t border-slate-100 pt-6">
+                    <h4 class="font-bold text-brand-dark text-sm mb-3">Feedback</h4>
+                    <p class="text-slate-600 text-sm leading-relaxed bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        "Good work on the conceptual framework questions. Review the section on 'Revenue Recognition' for the final exam." - Dr. Jenkins
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment 2 Content -->
+        <div id="assess-content-a2" class="assess-content hidden">
+             <div class="bg-white rounded-xl border border-slate-200 shadow-soft p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-brand-orange/10 text-brand-orange rounded-full text-[10px] font-bold uppercase tracking-widest border border-brand-orange/20 mb-2">Due Soon</span>
+                        <h2 class="text-2xl font-bold text-brand-dark">Assessment 2: Mid-Term Case Analysis</h2>
+                        <p class="text-sm text-slate-500 mt-1">Individual Report • 2000 Words</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Weighting</p>
+                        <p class="text-3xl font-bold text-brand-dark">30%</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-1">Due Date</h5>
+                        <p class="font-bold text-brand-dark">Oct 10, 2024</p>
+                        <p class="text-xs text-brand-orange font-bold mt-1">5 Days Left</p>
+                    </div>
+                     <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-1">Format</h5>
+                        <p class="font-bold text-brand-dark">PDF Document</p>
+                    </div>
+                     <div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                        <h5 class="text-xs font-bold text-slate-400 uppercase mb-1">Status</h5>
+                        <p class="font-bold text-slate-600">Not Submitted</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 pt-6">
+                    <h4 class="font-bold text-brand-dark text-sm mb-4">Submission</h4>
+                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <i class="fas fa-cloud-upload-alt text-3xl text-slate-300 mb-3 group-hover:text-brand-sky transition-colors"></i>
+                        <p class="font-bold text-slate-600">Drag & Drop your file here</p>
+                        <p class="text-xs text-slate-400 mt-1">or click to browse</p>
+                    </div>
+                    <div class="flex justify-end mt-4">
+                         <button class="bg-brand-dark text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow-md hover:bg-opacity-90 transition-all">Submit Assignment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment 3 Content -->
+        <div id="assess-content-a3" class="assess-content hidden">
+             <div class="bg-white rounded-xl border border-slate-200 shadow-soft p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[10px] font-bold uppercase tracking-widest border border-slate-200 mb-2">Locked</span>
+                        <h2 class="text-2xl font-bold text-brand-dark">Assessment 3: Final Project</h2>
+                        <p class="text-sm text-slate-500 mt-1">Group Presentation & Report</p>
+                    </div>
+                     <div class="text-right">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Weighting</p>
+                        <p class="text-3xl font-bold text-brand-dark">60%</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 text-center">
+                    <i class="fas fa-lock text-slate-300 text-2xl mb-3"></i>
+                    <p class="font-bold text-slate-600">Brief Available Nov 1</p>
+                    <p class="text-xs text-slate-400 mt-1">This content is currently locked.</p>
+                </div>
+             </div>
+        </div>
+
+        <!-- Grades Content -->
+        <div id="assess-content-grades" class="assess-content hidden">
+             <div class="bg-white rounded-xl border border-slate-200 shadow-soft overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                   <div>
+                       <h3 class="text-lg font-bold text-brand-dark">My Grades</h3>
+                       <p class="text-xs text-slate-500 mt-1">Semester 1, 2024</p>
+                   </div>
+                   <div class="text-right">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Current Average</p>
+                        <p class="text-xl font-bold text-brand-sky">85% (HD)</p>
+                   </div>
+                </div>
+                <table class="w-full text-left custom-table">
+                     <thead>
+                        <tr>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Item</th>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Date Graded</th>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100">Feedback</th>
+                           <th class="p-4 bg-slate-50 border-b border-slate-100 text-right">Score</th>
+                        </tr>
+                     </thead>
+                     <tbody class="text-sm">
+                        <tr>
+                           <td class="p-4 border-b border-slate-50 font-bold text-brand-dark">Quiz 1: Fundamentals</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">Aug 28, 2024</td>
+                           <td class="p-4 border-b border-slate-50"><a href="#" class="text-brand-sky hover:underline text-xs font-bold"><i class="fas fa-comment-alt mr-1"></i> View Feedback</a></td>
+                           <td class="p-4 border-b border-slate-50 text-right font-bold text-brand-dark">8.5/10</td>
+                        </tr>
+                        <tr>
+                           <td class="p-4 border-b border-slate-50 font-bold text-brand-dark">Participation (Week 1-4)</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-500">Sep 01, 2024</td>
+                           <td class="p-4 border-b border-slate-50 text-slate-400 text-xs italic">No feedback provided</td>
+                           <td class="p-4 border-b border-slate-50 text-right font-bold text-brand-dark">5/5</td>
+                        </tr>
+                     </tbody>
+                     <tfoot class="bg-slate-50">
+                        <tr>
+                            <td colspan="3" class="p-4 text-right font-bold text-slate-500 text-xs uppercase tracking-widest">Total Weighted Score</td>
+                            <td class="p-4 text-right font-bold text-brand-dark">13.5/15</td>
+                        </tr>
+                     </tfoot>
+                </table>
+             </div>
+        </div>
+    </div>
+
+    <div id="content-announcements" class="tab-content hidden animate-enter">
+         <div class="bg-white rounded-xl p-16 text-center border border-slate-200 shadow-soft">
+          <div class="w-16 h-16 bg-brand-light rounded-full flex items-center justify-center mx-auto mb-4">
+             <i class="fas fa-bullhorn text-2xl text-brand-brown/50"></i>
+          </div>
+          <h3 class="text-lg font-bold text-brand-dark">Announcements</h3>
+          <p class="text-slate-400 text-xs mt-1">Latest news from your lecturer.</p>
+       </div>
+    </div>
+    <div id="content-discussions" class="tab-content hidden animate-enter">
+         <div class="bg-white rounded-xl p-16 text-center border border-slate-200 shadow-soft">
+          <div class="w-16 h-16 bg-brand-light rounded-full flex items-center justify-center mx-auto mb-4">
+             <i class="fas fa-users text-2xl text-brand-brown/50"></i>
+          </div>
+          <h3 class="text-lg font-bold text-brand-dark">Discussions</h3>
+          <p class="text-slate-400 text-xs mt-1">Collaborate with peers.</p>
+       </div>
+    </div>
+    <div id="content-library" class="tab-content hidden animate-enter">
+         <div class="bg-white rounded-xl p-16 text-center border border-slate-200 shadow-soft">
+          <div class="w-16 h-16 bg-brand-light rounded-full flex items-center justify-center mx-auto mb-4">
+             <i class="fas fa-landmark text-2xl text-brand-brown/50"></i>
+          </div>
+          <h3 class="text-lg font-bold text-brand-dark">Library</h3>
+          <p class="text-slate-400 text-xs mt-1">Access digital resources.</p>
+       </div>
+    </div>
+    <div id="content-support" class="tab-content hidden animate-enter">
+         <div class="bg-white rounded-xl p-16 text-center border border-slate-200 shadow-soft">
+          <div class="w-16 h-16 bg-brand-light rounded-full flex items-center justify-center mx-auto mb-4">
+             <i class="fas fa-life-ring text-2xl text-brand-brown/50"></i>
+          </div>
+          <h3 class="text-lg font-bold text-brand-dark">Support</h3>
+          <p class="text-slate-400 text-xs mt-1">Get help with IT or Academic skills.</p>
+       </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // --- INTERACTIVITY ---
+  // We attach these to window so they are globally accessible in both the React preview and Moodle environment.
+
+  // 1. Calculate Live Semester Progress
+  window.updateSemesterProgress = function() {
+    // <!-- CONFIG: SEMESTER DATES - UPDATE THESE FOR LIVE ACCURACY -->
+    const semesterStart = new Date("2024-02-26");
+    const semesterEnd = new Date("2024-06-01");
+    // -------------------------------------------------------------
+
+    const now = new Date();
+    const totalDuration = semesterEnd - semesterStart;
+    const elapsed = now - semesterStart;
+
+    let percentage = 0;
+    if (elapsed > 0) {
+      percentage = Math.min(100, Math.round((elapsed / totalDuration) * 100));
+    }
+    
+    // Update Text
+    const progressText = document.getElementById("nav-progress-text");
+    if (progressText) progressText.innerText = percentage + "%";
+
+    // Update Circle Stroke (100 dash array)
+    // 0 stroke-dashoffset = 100% visible
+    // 100 stroke-dashoffset = 0% visible
+    const circle = document.getElementById("nav-progress-circle");
+    if (circle) {
+      const offset = 100 - percentage;
+      circle.style.strokeDashoffset = offset;
+    }
+    
+    // Update Week Label in Home Tab
+    const weekLabel = document.getElementById("current-week-label");
+    if (weekLabel && elapsed > 0) {
+        // Calculate week number (elapsed ms / ms in a week)
+        const currentWeek = Math.ceil(elapsed / (1000 * 60 * 60 * 24 * 7));
+        if (currentWeek > 12) {
+             weekLabel.innerText = "Exam Period";
+             weekLabel.classList.remove("bg-brand-sky/10", "text-brand-sky");
+             weekLabel.classList.add("bg-red-50", "text-red-500");
+        } else {
+             weekLabel.innerText = "Week " + currentWeek;
+        }
+    }
+  };
+
+  // 2. Tab Switching (Main Tabs)
+  window.switchTab = function(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    const content = document.getElementById('content-' + tabId);
+    if(content) content.classList.remove('hidden');
+    
+    document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
+    const btn = document.getElementById('tab-' + tabId);
+    if(btn) btn.classList.add('active');
+  };
+
+  // 2.5 Week Switching (Learning Materials Sub-tabs)
+  window.switchWeek = function(weekId) {
+    // Hide all week content
+    document.querySelectorAll('.week-content').forEach(el => el.classList.add('hidden'));
+    const content = document.getElementById('week-content-' + weekId);
+    if(content) content.classList.remove('hidden');
+
+    // Reset all buttons
+    document.querySelectorAll('.week-btn').forEach(el => {
+        el.classList.remove('bg-brand-dark', 'text-white', 'shadow-md');
+        el.classList.add('text-slate-500', 'hover:bg-slate-50', 'border-transparent');
+    });
+
+    // Active button style
+    const btn = document.getElementById('week-btn-' + weekId);
+    if(btn) {
+        btn.classList.remove('text-slate-500', 'hover:bg-slate-50', 'border-transparent');
+        btn.classList.add('bg-brand-dark', 'text-white', 'shadow-md');
+    }
+  };
+
+  // 6. Assessment Switching
+  window.switchAssessment = function(tabId) {
+    // Hide all assessment content
+    document.querySelectorAll('.assess-content').forEach(el => el.classList.add('hidden'));
+    const content = document.getElementById('assess-content-' + tabId);
+    if(content) content.classList.remove('hidden');
+
+    // Reset all buttons
+    document.querySelectorAll('.assess-btn').forEach(el => {
+        el.classList.remove('bg-brand-dark', 'text-white', 'shadow-md');
+        el.classList.add('text-slate-500', 'hover:bg-slate-50', 'border-transparent');
+    });
+
+    // Active button style
+    const btn = document.getElementById('assess-btn-' + tabId);
+    if(btn) {
+        btn.classList.remove('text-slate-500', 'hover:bg-slate-50', 'border-transparent');
+        btn.classList.add('bg-brand-dark', 'text-white', 'shadow-md');
+    }
+  };
+
+  // 3. Accordion Toggle (Generic)
+  window.toggleAccordion = function(header) {
+    const container = header.parentElement;
+    const body = container.querySelector('.accordion-body');
+    const isOpen = body.classList.contains('open');
+
+    // Toggle current
+    if (isOpen) {
+      body.classList.remove('open');
+      container.classList.remove('active');
+    } else {
+      body.classList.add('open');
+      container.classList.add('active');
+    }
+  };
+
+  // 3.5 Timeline Step Toggle
+  window.toggleStep = function(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.fa-chevron-down');
+    
+    if (body.classList.contains('open')) {
+        body.classList.remove('open');
+        if(icon) icon.style.transform = 'rotate(0deg)';
+    } else {
+        body.classList.add('open');
+        if(icon) icon.style.transform = 'rotate(180deg)';
+    }
+  };
+
+  // 4. Checklist Toggle
+  window.toggleCheck = function(li) {
+    const icon = li.querySelector('.check-icon');
+    if (icon.classList.contains('fa-circle')) {
+       icon.classList.remove('fa-circle', 'far', 'text-slate-300');
+       icon.classList.add('fa-check-circle', 'fas', 'text-green-500');
+       li.classList.add('bg-green-50', 'border-green-200');
+       li.classList.remove('bg-white', 'border-slate-100');
+    } else {
+       icon.classList.add('fa-circle', 'far', 'text-slate-300');
+       icon.classList.remove('fa-check-circle', 'fas', 'text-green-500');
+       li.classList.remove('bg-green-50', 'border-green-200');
+       li.classList.add('bg-white', 'border-slate-100');
+    }
+  };
+
+  // 5. Video Player Logic
+  window.playVideo = function(container, videoId) {
+    if (!container) return;
+    
+    // Create iframe element
+    var iframe = document.createElement('iframe');
+    iframe.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1&modestbranding=1&rel=0&showinfo=0";
+    iframe.className = "w-full h-full absolute inset-0 rounded-2xl";
+    iframe.frameBorder = "0";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    
+    // Clear the container (remove image/button)
+    container.innerHTML = "";
+    
+    // Add iframe
+    container.appendChild(iframe);
+    
+    // Remove pointer cursor and click event to prevent re-triggering
+    container.removeAttribute("onclick");
+    container.classList.remove("cursor-pointer");
+  };
+
+  // Run on load
+  window.updateSemesterProgress();
+</script>
